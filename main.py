@@ -66,7 +66,7 @@ class TMDBMovieDetails(BaseModel):
     release_date: Optional[str] = None
     poster_url: Optional[str] = None
     backdrop_url: Optional[str] = None
-    genres: List[str] = []
+    genres: List[Dict[str, Any]] = []
 
 class TFIDFRecItem(BaseModel):
     title: str
@@ -343,7 +343,7 @@ async def recommend_genre(
         params={"with_genres": genre_id, "sort_by": "popularity.desc", "language": "en-US", "page": 1},
     )
 
-    cards = await tmdb_card_from_results(discover.get("/results", []), limit=limit)
+    cards = await tmdb_card_from_results(discover.get("results", []), limit=limit)
     return [c for c in cards if c.tmdb_id != tmdb_id]
 
 
